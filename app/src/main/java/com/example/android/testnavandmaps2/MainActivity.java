@@ -30,6 +30,20 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Fragment fragment = null;
+        Class fragmentClass;
+
+        fragmentClass = MapsActivity.class;
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit();
 
         /*My sMapFragment code goes here */
 /*
@@ -108,7 +122,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
 
         Fragment fragment = null;
-        android.support.v4.app.FragmentManager sFm = getSupportFragmentManager();
         Class fragmentClass;
 
         // Handle navigation view item clicks here.
