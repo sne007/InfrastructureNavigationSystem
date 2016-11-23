@@ -1,9 +1,10 @@
 package com.example.android.testnavandmaps2;
 
-import android.support.v4.app.Fragment;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -24,17 +24,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends Fragment {
 
+    int counter =0;
 
     GoogleMap googleMap;
     MapView mMapView;
 
-
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("counter",counter);
     }
 
 
@@ -44,6 +42,8 @@ public class MapsActivity extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
 
         View rootView = inflater.inflate(R.layout.fragment_maps, container, false);
 
@@ -105,6 +105,22 @@ public class MapsActivity extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+/*
+        if (savedInstanceState == null){
+            Toast.makeText(getContext(),"this is the first time",Toast.LENGTH_LONG).show();
+            counter++;
+
+        }
+        else {
+            Toast.makeText(getContext(),"this is the "+counter+ " time",Toast.LENGTH_LONG).show();
+            counter++;
+        }
+*/
     }
 
     @Override

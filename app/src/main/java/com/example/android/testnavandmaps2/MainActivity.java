@@ -1,9 +1,8 @@
 package com.example.android.testnavandmaps2;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,23 +11,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback,Communicator {
 
 //    SupportMapFragment sMapFragment;
+    boolean dataRecieved = false;
+
+
+    public static final String MESSAGE_KEY = "com.example.android.testnavandmaps2.message_key";
+    String message="hai";
+    public int counter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment, new MapsActivity(), "tag").commit();
 
         Fragment fragment = null;
         Class fragmentClass;
@@ -36,9 +41,7 @@ public class MainActivity extends AppCompatActivity
         fragmentClass = MapsActivity.class;
         try {
             fragment = (Fragment) fragmentClass.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
@@ -57,12 +60,20 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        if (counter == 5){
+  /*
+            Intent intent = getIntent();
+            message = intent.getStringExtra(MESSAGE_KEY);
+*/
+                Toast.makeText(this," this seems like working",Toast.LENGTH_SHORT);
+
+        }
+
 /*
 
 
 // Remove comments if floating bar is needed. Though, Some functionality of it is deleted, check it !  :)
-
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +95,23 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
+    @Override
+    public void onActivityResult( int requestCode ,int resultCode, Intent data){
+        if(requestCode == 42){
+            if(resultCode == RESULT_OK){
+                DataObject dat = data.getParcelableExtra("data");
+
+                String greeting = "Hello " + dat.getName() + " your favorite word is: " + dat.getFavoriteWord();
+                Toast.makeText(this,greeting,Toast.LENGTH_LONG).show();
+                dataRecieved = true;
+            }else if (resultCode == RESULT_CANCELED){
+                Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -125,32 +153,19 @@ public class MainActivity extends AppCompatActivity
         Class fragmentClass;
 
         // Handle navigation view item clicks here.
+
         int id = item.getItemId();
-/*
-        if (sMapFragment.isAdded())
-            sFm.beginTransaction().hide(sMapFragment).commit();
-*/
+
         if (id == R.id.home1) {
-
-
-            fragmentClass = MapsActivity.class;
-            try {
-                fragment = (Fragment) fragmentClass.newInstance();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-
-
+            Intent secondActivityIntent = new Intent(this, FiltersActivity.class);
+            secondActivityIntent.putExtra("color", R.id.home1);
+            startActivityForResult(secondActivityIntent, 42);
         } else if (id == R.id.filters1) {
 
             fragmentClass = FiltersActivity.class;
             try {
                 fragment = (Fragment) fragmentClass.newInstance();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+            } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
 
@@ -167,6 +182,9 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit();
+
 
 
         } else if (id == R.id.help1) {
@@ -180,16 +198,16 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit();
+
+
 
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
         }
-
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit();
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -201,5 +219,25 @@ public class MainActivity extends AppCompatActivity
 
         Toast.makeText(getApplicationContext(), "Map is ready", Toast.LENGTH_LONG).show();
         System.out.println("Mapz ready");
+    }
+
+    @Override
+    public void respond(boolean applyClicked) {
+        if (applyClicked == true){
+            Fragment fragment = null;
+            Class fragmentClass;
+            fragmentClass = MapsActivity.class;
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit();
+
+        }
     }
 }
