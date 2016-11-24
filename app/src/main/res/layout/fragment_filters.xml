@@ -12,7 +12,7 @@
     <include
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"
-        android:layout_height="70dp" />
+        android:layout_height="75dp" />
 
     <LinearLayout
     android:layout_width="match_parent"
@@ -41,85 +41,14 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:fontFamily="sans-serif"
-            android:text="Investment"
+            android:text="Investment (INR 1M-1B)"
             android:textSize="20sp" />
 
         <SeekBar
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="16dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:background="#80BBDEFB"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/Investment1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:fontFamily="sans-serif"
-            android:text="Investment"
-            android:textSize="20sp" />
-
-        <SeekBar
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="16dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:background="#80BBDEFB"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/Investment3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:fontFamily="sans-serif"
-            android:text="Investment"
-            android:textSize="20sp" />
-
-        <SeekBar
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="16dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:background="#BBDEFB"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/Investment2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:fontFamily="sans-serif"
-            android:text="Investment"
-            android:textSize="20sp" />
-
-        <SeekBar
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="16dp" />
+            android:id="@+id/seek_bar_investment"/>
 
     </LinearLayout>
 
@@ -147,35 +76,96 @@
             android:layout_margin="8dp"
             android:orientation="horizontal">
 
-            <Button
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="hai" />
+                android:orientation="horizontal">
 
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="hai" />
+                <CheckBox
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textSize="20sp"/>
 
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="hai" />
 
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="hai" />
+            </LinearLayout>
 
-            <Button
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="hai" />
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textSize="20sp"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:textSize="20sp"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4"
+                    android:textSize="20sp"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5"
+                    android:textSize="20sp"/>
+
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
@@ -191,7 +181,7 @@
         android:orientation="vertical">
 
         <CheckBox
-            android:id="@+id/stage_checkbox"
+            android:id="@+id/ColorCoded_checkBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"

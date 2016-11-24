@@ -1,5 +1,6 @@
 package com.example.android.testnavandmaps2;
 
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,7 +9,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -18,21 +24,23 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+
 /**
  * Created by snehith on 22/11/16.
  */
 
 public class MapsActivity extends Fragment {
 
-    int counter =0;
-
+    private static final int PLACE_PICKER_REQUEST = 1;
     GoogleMap googleMap;
     MapView mMapView;
+    private GoogleApiClient mGoogleApiClient;
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("counter",counter);
+
     }
 
 
@@ -77,14 +85,17 @@ public class MapsActivity extends Fragment {
                 googleMap.setMyLocationEnabled(true);
 
                 // For dropping a marker at a point on the Map
-                LatLng sydney = new LatLng(-34, 151);
-                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
+                LatLng raipur = new LatLng(21.259651, 81.617697);
+                MarkerOptions marker = new MarkerOptions().position(raipur).title("Marker Title").snippet("Marker Description");
+                googleMap.addMarker(marker);
 
                 // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(raipur).zoom(7).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });
+
+
 
         return rootView;
     }
@@ -110,17 +121,6 @@ public class MapsActivity extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-/*
-        if (savedInstanceState == null){
-            Toast.makeText(getContext(),"this is the first time",Toast.LENGTH_LONG).show();
-            counter++;
-
-        }
-        else {
-            Toast.makeText(getContext(),"this is the "+counter+ " time",Toast.LENGTH_LONG).show();
-            counter++;
-        }
-*/
     }
 
     @Override

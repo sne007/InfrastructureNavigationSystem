@@ -1,7 +1,13 @@
 package com.example.android.testnavandmaps2;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -11,22 +17,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback,Communicator {
 
-//    SupportMapFragment sMapFragment;
-    boolean dataRecieved = false;
+    private static final int GET_FROM_GALLERY = 12;
+    boolean colorCoded = false;
 
-
-    public static final String MESSAGE_KEY = "com.example.android.testnavandmaps2.message_key";
-    String message="hai";
-    public int counter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,43 +55,12 @@ public class MainActivity extends AppCompatActivity
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit();
 
-        /*My sMapFragment code goes here */
-/*
-        sMapFragment = SupportMapFragment.newInstance();
-        sMapFragment.getMapAsync(this);
-
-        if (!sMapFragment.isAdded())
-            sFm.beginTransaction().add(R.id.fragment, sMapFragment).commit();
-        else sFm.beginTransaction().show(sMapFragment).commit();
-*/
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (counter == 5){
-  /*
-            Intent intent = getIntent();
-            message = intent.getStringExtra(MESSAGE_KEY);
-*/
-                Toast.makeText(this," this seems like working",Toast.LENGTH_SHORT);
-
-        }
-
-/*
 
 
-// Remove comments if floating bar is needed. Though, Some functionality of it is deleted, check it !  :)
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        */
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -92,8 +68,16 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        ImageView imageView1 = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView);
+        imageView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
+            }
+        });
+
     }
 
     @Override
@@ -102,12 +86,32 @@ public class MainActivity extends AppCompatActivity
             if(resultCode == RESULT_OK){
                 DataObject dat = data.getParcelableExtra("data");
 
-                String greeting = "Hello " + dat.getName() + " your favorite word is: " + dat.getFavoriteWord();
+                String greeting = dat.getName();
+                if (greeting.equalsIgnoreCase("ischecked"))
+                    colorCoded = true;
+
                 Toast.makeText(this,greeting,Toast.LENGTH_LONG).show();
-                dataRecieved = true;
+//                dataRecieved = true;
             }else if (resultCode == RESULT_CANCELED){
                 Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
             }
+        }
+
+        //Detects request codes
+        if(requestCode==GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            ImageView imageView = (ImageView) findViewById(R.id.imageView);
+            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
         }
 
     }
@@ -157,18 +161,16 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.home1) {
-            Intent secondActivityIntent = new Intent(this, FiltersActivity.class);
-            secondActivityIntent.putExtra("color", R.id.home1);
-            startActivityForResult(secondActivityIntent, 42);
+
+            Intent firstActivityIntent = new Intent(this, FiltersActivity.class);
+            startActivity(firstActivityIntent);
+
         } else if (id == R.id.filters1) {
 
-            fragmentClass = FiltersActivity.class;
-            try {
-                fragment = (Fragment) fragmentClass.newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
 
+            Intent secondActivityIntent = new Intent(this, FiltersActivity.class);
+            secondActivityIntent.putExtra("color", 100);
+            startActivityForResult(secondActivityIntent, 42);
 
         } else if (id == R.id.aboutUs1) {
 

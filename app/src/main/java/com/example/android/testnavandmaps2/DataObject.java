@@ -40,6 +40,7 @@ public class DataObject implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(name);
         parcel.writeString(favoriteWord);
+
     }
 
 

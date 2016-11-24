@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="2"/>
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="#80000000"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#000000"
         android:text="hai babe !"
         android:layout_alignBottom="@id/mapView" />
 
-</RelativeLayout>
+</LinearLayout>
