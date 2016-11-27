@@ -1,6 +1,6 @@
 package com.example.android.testnavandmaps2;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,20 +9,26 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.w3c.dom.Text;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+import static android.widget.Toast.LENGTH_LONG;
 
 
 /**
@@ -35,6 +41,8 @@ public class MapsActivity extends Fragment {
     GoogleMap googleMap;
     MapView mMapView;
     private GoogleApiClient mGoogleApiClient;
+    boolean colorCoded = false;
+
 
 
     @Override
@@ -48,14 +56,18 @@ public class MapsActivity extends Fragment {
         // Required empty public constructor
     }
 
-    @Override
+        @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
 
         View rootView = inflater.inflate(R.layout.fragment_maps, container, false);
 
-        mMapView = (MapView) rootView.findViewById(R.id.mapView);
+      //      String strtext = this.getArguments().getString("edttext");
+      //      Toast.makeText(getContext(), strtext, LENGTH_LONG).show();
+      //      System.out.println(strtext);
+
+            mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume(); // needed to get the map to display immediately
@@ -86,8 +98,58 @@ public class MapsActivity extends Fragment {
 
                 // For dropping a marker at a point on the Map
                 LatLng raipur = new LatLng(21.259651, 81.617697);
+                LatLng raipur1 = new LatLng(19.259651, 86.617697);
+                LatLng raipur2= new LatLng(9.259651, 92.617697);
+                LatLng raipur3 = new LatLng(31.259651, 54.617697);
+                LatLng raipur4 = new LatLng(26.259651, 80.617697);
+                LatLng raipur5 = new LatLng(24.259651, 87.617697);
+                LatLng raipur6 = new LatLng(25.259651, 84.617697);
+
+/*
                 MarkerOptions marker = new MarkerOptions().position(raipur).title("Marker Title").snippet("Marker Description");
                 googleMap.addMarker(marker);
+*/
+                googleMap.addMarker(new MarkerOptions()
+                        .position(raipur)
+                        .title("Sydney")
+                        .snippet("Population: 4,627,300")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.bridge)));
+
+                googleMap.addMarker(new MarkerOptions()
+                        .position(raipur1)
+                        .title("Sydney")
+                        .snippet("Population: 4,627,300")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.bridge)));
+
+                googleMap.addMarker(new MarkerOptions()
+                        .position(raipur2)
+                        .title("Sydney")
+                        .snippet("Population: 4,627,300")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.bridge)));
+                googleMap.addMarker(new MarkerOptions()
+                        .position(raipur3)
+                        .title("Sydney")
+                        .snippet("Population: 4,627,300")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.bridge)));
+                googleMap.addMarker(new MarkerOptions()
+                        .position(raipur4)
+                        .title("Sydney")
+                        .snippet("Population: 4,627,300")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.bridge)));
+                googleMap.addMarker(new MarkerOptions()
+                        .position(raipur5)
+                        .title("Sydney")
+                        .snippet("Population: 4,627,300")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.bridge)));
+                googleMap.addMarker(new MarkerOptions()
+                        .position(raipur6)
+                        .title("Sydney")
+                        .snippet("Population: 4,627,300")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.bridge)));
+
+
+                TextView tv = (TextView) getActivity().findViewById(R.id.testView);
+                Toast.makeText(getContext(),tv.getText(),Toast.LENGTH_SHORT).show();
 
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(raipur).zoom(7).build();
@@ -96,8 +158,7 @@ public class MapsActivity extends Fragment {
         });
 
 
-
-        return rootView;
+            return rootView;
     }
 
     @Override

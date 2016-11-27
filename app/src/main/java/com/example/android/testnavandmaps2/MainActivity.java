@@ -3,7 +3,6 @@ package com.example.android.testnavandmaps2;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,13 +18,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity
@@ -33,12 +30,70 @@ public class MainActivity extends AppCompatActivity
 
     private static final int GET_FROM_GALLERY = 12;
     boolean colorCoded = false;
+    boolean b = false;
+    boolean bh = false;
+    TextView tv;
+
+
+
+    @Override
+    public void onActivityResult( int requestCode ,int resultCode, Intent data){
+
+        if(requestCode == 42){
+
+            if(resultCode == RESULT_OK){
+                DataObject dat = data.getParcelableExtra("data");
+
+                String greeting = dat.getName();
+                tv = (TextView) findViewById(R.id.testView);
+                if (greeting.equalsIgnoreCase("ischecked"))
+                    colorCoded = true;
+
+                if (greeting.equals("bridge and hospital")){
+                    bh=true;
+                    tv.setText(greeting);
+                    //tv.setAlpha(0.0f);
+                }
+
+                if (greeting.equals("bridge") && !greeting.equals("bridge and hospital")){
+                    b=true;
+                    tv.setText(greeting);
+                    //tv.setAlpha(0.0f);
+                }
+            }else if (resultCode == RESULT_CANCELED){
+                Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        //Detects request codes
+
+        if(requestCode==GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            ImageView imageView = (ImageView) findViewById(R.id.imageView);
+            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+        }
+
+    }
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
 
         getSupportFragmentManager().beginTransaction().add(R.id.fragment, new MapsActivity(), "tag").commit();
 
@@ -59,9 +114,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -78,43 +130,10 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-    }
 
-    @Override
-    public void onActivityResult( int requestCode ,int resultCode, Intent data){
-        if(requestCode == 42){
-            if(resultCode == RESULT_OK){
-                DataObject dat = data.getParcelableExtra("data");
-
-                String greeting = dat.getName();
-                if (greeting.equalsIgnoreCase("ischecked"))
-                    colorCoded = true;
-
-                Toast.makeText(this,greeting,Toast.LENGTH_LONG).show();
-//                dataRecieved = true;
-            }else if (resultCode == RESULT_CANCELED){
-                Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        //Detects request codes
-        if(requestCode==GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-
-            ImageView imageView = (ImageView) findViewById(R.id.imageView);
-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-        }
 
     }
+
 
 
     @Override
@@ -162,7 +181,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.home1) {
 
-            Intent firstActivityIntent = new Intent(this, FiltersActivity.class);
+            Intent firstActivityIntent = new Intent(this, MainActivity.class);
             startActivity(firstActivityIntent);
 
         } else if (id == R.id.filters1) {

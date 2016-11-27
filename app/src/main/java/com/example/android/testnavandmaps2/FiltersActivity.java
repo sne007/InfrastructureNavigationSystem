@@ -1,6 +1,5 @@
 package com.example.android.testnavandmaps2;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,13 +15,7 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 
 
@@ -38,6 +31,7 @@ public class FiltersActivity extends AppCompatActivity implements NavigationView
     boolean checked = false;
     private GoogleApiClient mGoogleApiClient;
     int PLACE_PICKER_REQUEST = 1;
+    int progress=0;
 
 
     @Override
@@ -56,10 +50,20 @@ public class FiltersActivity extends AppCompatActivity implements NavigationView
                 Intent resultIntent = new Intent();
                 DataObject data = new DataObject();
                 CheckBox checkBox = (CheckBox) findViewById(R.id.ColorCoded_checkBox);
+                CheckBox bridge = (CheckBox) findViewById(R.id.bridge);
+                CheckBox school = (CheckBox) findViewById(R.id.school);
+                CheckBox hospital = (CheckBox) findViewById(R.id.hospital);
+                CheckBox post = (CheckBox) findViewById(R.id.post);
+
                 if (checkBox.isChecked()){
                     data.setName("isChecked");
                 }
-//                data.setFavoriteWord(button.getText().toString());
+                if (bridge.isChecked() && hospital.isChecked())
+                    data.setName("bridge and hospital");
+                if (bridge.isChecked() && !(bridge.isChecked() && hospital.isChecked()) )
+                    data.setName("bridge");
+
+                data.setFavoriteWord(button.getText().toString());
                 resultIntent.putExtra("data", data);
                 setResult(RESULT_OK,resultIntent);
                 finish();
@@ -72,7 +76,7 @@ public class FiltersActivity extends AppCompatActivity implements NavigationView
         seekBar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                Toast.makeText(getApplicationContext(),"progress is "+i,Toast.LENGTH_SHORT).show();
+                progress =i;
             }
 
             @Override
@@ -82,7 +86,7 @@ public class FiltersActivity extends AppCompatActivity implements NavigationView
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                Toast.makeText(getApplicationContext(),"Investment is "+progress,Toast.LENGTH_SHORT).show();
             }
         });
 
